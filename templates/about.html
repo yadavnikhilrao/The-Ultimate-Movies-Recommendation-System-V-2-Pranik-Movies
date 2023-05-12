@@ -1,0 +1,406 @@
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pranik Movies</title>
+  <link href="../static/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../static/css/font-awesome.min.css" rel="stylesheet">
+  <link href="../static/css/global.css" rel="stylesheet">
+  <link href="../static/css/rec.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani&amp;display=swap" rel="stylesheet">
+  <script src="../static/js/bootstrap.bundle.min.js"></script>
+  <script src="../static/js/web.js"></script>
+
+
+
+
+
+    <!-- ------------------ Search Bar ------------------------- -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  
+<!-- ---------------- 1st Search bar -------------------- -->
+<script>
+    $(document).ready(function() {
+        $("#search-box-1").keyup(function() {
+            var query = $(this).val();
+            if (query.length > 1) {
+                $.get("/suggestions/" + query, function(data) {
+                    var suggestions = data.suggestions;
+                    var html = "";
+                    if (suggestions.length > 0) {
+                        for (var i = 0; i < suggestions.length; i++) {
+                            var suggestion = suggestions[i];
+                            html += '<li><a href="/search?query=' + suggestion.title + '&id=' + suggestion.id + '">' + suggestion.title + '</a></li>';
+                        }
+                    } else {
+                        html += '<li style="color: white;" onmouseover="this.style.color=\'red\';" onmouseout="this.style.color=\'white\';">Sorry! Not available</li>';
+                    }
+                    $("#suggestions-1").html(html);
+                    $("#suggestions-1").show();
+                });
+            } else {
+                $("#suggestions-1").hide();
+            }
+        });
+
+        // Add event listener to hide the suggestion box when clicking outside of it
+        $(document).on("click", function(event) {
+            if (!$(event.target).closest("#suggestions-1").length && !$(event.target).is("#search-box-1")) {
+                $("#suggestions-1").hide();
+            }
+        });
+
+        // Add event listener to submit the form when clicking the search button
+        $("#search-button").on("click", function(event) {
+            var searchValue = $("#search-box-1").val().trim();
+            if (searchValue !== "") {
+                // submit the search form with the search query as a parameter
+                var searchForm = $("#search-form");
+                searchForm.attr("action", "/search");
+                searchForm.attr("method", "GET");
+                var queryInput = $("<input>")
+                    .attr("type", "hidden")
+                    .attr("name", "query")
+                    .val(searchValue);
+                searchForm.append(queryInput);
+                searchForm.submit();
+            }
+        });
+    });
+</script>
+
+<!-- ---------------- 2nd Search bar -------------------- -->
+<script>
+    $(document).ready(function() {
+        $("#search-box-2").keyup(function() {
+            var query = $(this).val();
+            if (query.length > 1) {
+                $.get("/suggestions/" + query, function(data) {
+                    var suggestions = data.suggestions;
+                    var html = "";
+                    if (suggestions.length > 0) {
+                        for (var i = 0; i < suggestions.length; i++) {
+                            var suggestion = suggestions[i];
+                            html += '<li><a href="/search?query=' + suggestion.title + '&id=' + suggestion.id + '">' + suggestion.title + '</a></li>';
+                        }
+                    } else {
+                        html += '<li style="color: white;" onmouseover="this.style.color=\'red\';" onmouseout="this.style.color=\'white\';">Not available</li>';
+                    }
+                    $("#suggestions-2").html(html);
+                    $("#suggestions-2").show();
+                });
+            } else {
+                $("#suggestions-2").hide();
+            }
+        });
+
+        // Add event listener to hide the suggestion box when clicking outside of it
+        $(document).on("click", function(event) {
+            if (!$(event.target).closest("#suggestions-2").length && !$(event.target).is("#search-box-2")) {
+                $("#suggestions-2").hide();
+            }
+        });
+    });
+</script>
+<style type="text/css">@font-face { font-family: Roboto; src: url("chrome-extension://mcgbeeipkmelnpldkobichboakdfaeon/css/Roboto-Regular.ttf"); }
+</style>
+
+</head>
+
+<body style="padding-top: 0px;">
+
+<!-- ------------------- Headers 1 --------------------- -->
+<section id="top">
+<form method="POST" action="/search-movie">
+<div class="container">
+ <div class="row top_1">
+  <div class="col-md-3">
+   <div class="top_1l pt-1">
+    <h3 class="mb-0"><a class="text-white" href="/"><i class="fa fa-video-camera col_red me-1"></i> Pranik Movies</a></h3>
+    
+   </div>
+  </div>
+  <div class="col-md-5">
+   <div class="top_1m">
+
+    <div class="input-group">
+    <span class="input-group-text input-group-prepend bg-black rounded-0" style="border: none;">
+        <img src="../static/img/search.png" alt="Search Icon" style="height: 22px; width: 22px; background-color: transparent;">
+    </span>
+    <input type="text" class="form-control bg-black movie" id="search-box-1" name="movie" required="required" placeholder="Search Movie..." autocomplete="off">
+    <ul class="dropdown-menu bg-black" id="suggestions-1" style="display: none;"></ul>
+    <span class="input-group-btn">
+        <button class="btn btn text-white bg_red rounded-0 border-0" type="submit">
+            Search
+        </button>
+    </span>
+</div>
+
+   </div>
+  </div>
+  <div class="col-md-4">
+   <div class="top_1r text-end">
+     <ul class="social-network social-circle mb-0">
+      <li><a href="https://instagram.com/yadavnikhilrao" class="icoRss" title="Rss"><i class="fa fa-instagram"></i></a></li>
+      <li><a href="https://www.facebook.com/yadavnikhilrao" class="icoFacebook" title="Facebook"><i class="fa fa-facebook"></i></a></li>
+      <li><a href="https://twitter.com/yadavnikhilrao" class="icoTwitter" title="Twitter"><i class="fa fa-twitter"></i></a></li>
+      <li><a href="https://www.youtube.com/@yadavnikhilrao" class="icoGoogle" title="Google +"><i class="fa fa-youtube"></i></a></li>
+      <li><a href="https://linkedin.com/in/yadavnikhilrao" class="icoLinkedin" title="Linkedin"><i class="fa fa-linkedin"></i></a></li>
+    </ul>
+   </div>
+  </div>
+ </div>
+</div>
+</form>
+</section>
+
+<!-- ------------------ navBar ------------------------- -->
+<section id="header">
+  <nav class="navbar navbar-expand-md navbar-light sticky" id="navbar_sticky">
+    <div class="container">
+      <a class="navbar-brand text-white fw-bold" href="/"><i class="fa fa-video-camera col_red me-1"></i> Pranik Movies</a>
+      <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="navbar-collapse collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav ms-auto mb-2 mb-md-0">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="/">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/about">About</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="/contact">Contact Us</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</section>
+
+<script>
+  // Hide navbar when clicked outside of it
+  $(document).click(function(event) {
+    var clickover = $(event.target);
+    var navbar = $(".navbar-collapse");
+    var opened = navbar.hasClass("show");
+    if (opened === true && !clickover.hasClass("navbar-toggler")) {
+      navbar.collapse("hide");
+    }
+  });
+</script>
+
+<!--------------- About Me --------------------->
+<section id="about_pg" style="padding-top:50px">
+    <div class="about_pgm">
+      <div class="row container about_pg1">
+        <div class="col-md-6">
+          <h2><span class="col_red heading_main desktop_heading about_me">About Me</span><br>  </h2>
+          <p class="mt-3 bio">Hi there, my name is <strong>Nikhil Kumar Yadav</strong>, and I have a keen interest in programming, machine learning, and data science. I am always eager to learn about new technologies and explore their potential.</p>
+          <p class="bio">My passion for technology has driven me to pursue a Master's degree in Artificial Intelligence.</p>
+          <p class="bio">In addition to my personal interests, I am also committed to contributing to the field through projects like my movie recommendation system.</p>
+          <p class="bio"> I would love to hear your feedback on this project and welcome any constructive criticism to help me improve. Thank you for taking the time to check out my work!</p>
+        </div>
+<div class="col-md-6 text-center" style="padding-top:25px;">
+    <img src="../static/img/nik.jpg" alt="Your Photo" class="img-fluid" style="border-radius: 8%;">
+    <h4 class="heading_main desktop_heading" style="padding-top: 10px;color: #A91B0D; ">
+        Nikhil Kumar Yadav
+        <hr class="fw-bold" style="margin-top: 5px; margin-bottom: 10px; border: 1px solid red;width:20%; margin-left:40%;margin-right:40% ;">
+    </h4>
+</div>
+
+      </div>
+    </div>
+</section>
+  
+
+
+<!-- --------------------- Skills ------------------------- -->
+<section id="price" class="pt-4 pb-4">
+ <div class="container-xl">
+   
+   <div class="row work_1 mt-5">
+    <div class="col-md-6">
+   <div class="work_1l" style="padding-top:25px">
+    <h4 class="col_red mb-4">My Expertise</h4>
+    <div class="accordion" id="accordionExample">
+  <div class="accordion-item">
+   <h2 class="accordion-header" id="headingOne">
+     <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+       Smart Product Recommendations
+     </button>
+   </h2>
+   <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample" style="">
+     <div class="accordion-body">
+      Let our Smart Product Recommendations service suggest the perfect product for you. Discover products tailored to your preferences with our AI-powered recommendation engine.
+     </div>
+   </div>
+  </div>
+   
+  <div class="accordion-item">
+   <h2 class="accordion-header" id="headingTwo">
+     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+      InsightIQ Analytics
+     </button>
+   </h2>
+   <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+     <div class="accordion-body">
+        Gain valuable insights into your business with InsightIQ Analytics.<br>
+        Let InsightIQ Analytics help you make data-driven decisions.<br>
+        Unlock the power of your data with InsightIQ Analytics.<br>
+     </div>
+   </div>
+ </div>
+  
+  <div class="accordion-item">
+   <h2 class="accordion-header" id="headingThree">
+     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+      Data Science Solutions
+     </button>
+   </h2>
+   <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+     <div class="accordion-body">
+       Our data science service provides advanced analytics and insights to help businesses make informed decisions. We use cutting-edge tools and techniques to analyze complex data sets, identify patterns, and make predictions.
+     </div>
+   </div>
+ </div>
+</div>
+   </div>
+  </div>
+  <div class="col-md-6">
+   <div class="work_1r">
+      <h4 class="col_red mb-4" style="padding-top:25px">My Skills</h4>
+    <div class="play2rir">
+     <h6 class="fw-normal">Programming<span class="pull-right">85%</span></h6>
+         <div class="progress">
+  <div class="progress-bar" role="progressbar" style="width: 85%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+</div>
+          <h6 class="fw-normal mt-4">Machine Learning <span class="pull-right">80%</span></h6>
+         <div class="progress">
+  <div class="progress-bar" role="progressbar" style="width: 80%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+</div>
+          <h6 class="fw-normal mt-4">Data Science <span class="pull-right">90%</span></h6>
+         <div class="progress">
+  <div class="progress-bar" role="progressbar" style="width: 90%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+</div>
+          <h6 class="fw-normal mt-4">Development <span class="pull-right">83%</span></h6>
+         <div class="progress">
+  <div class="progress-bar" role="progressbar" style="width: 83%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+</div>
+ <h6 class="fw-normal mt-4">My SQL <span class="pull-right">79%</span></h6>
+         <div class="progress">
+  <div class="progress-bar" role="progressbar" style="width: 79%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+</div>
+ 
+    </div>
+   </div>
+  </div>
+   </div>
+ </div>
+</section>
+
+
+
+
+
+
+<style>
+  /* add some margin to the left and right of the container to center it */
+  .container {
+    margin:  auto;
+    max-width: auto;
+  }
+
+  /* add some margin between the columns */
+  .popular_2i .col-md-4 {
+    margin-bottom: 20px;
+  }
+
+  }
+
+  /* change the color of the button */
+  .button {
+    background-color: #E50914;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    text-decoration: none;
+  }
+
+  /* add hover effect to the button */
+  .button:hover {
+    background-color: #F8475F;
+  }
+
+  /* change the color of the movie title */
+  .col_red {
+    color: #E50914;
+  }
+
+  /* add some margin to the top and bottom of the section */
+  #popular {
+    margin-top: 50px;
+    margin-bottom: 50px;
+  }
+</style>
+
+<!-- ---------------------- Footer -------------------------- -->
+<section id="footer">
+  <div class="footer_m clearfix">
+    <div class="container">
+      <div class="">
+        <h3><a class="text-white" href="/"><i class="fa fa-video-camera col_red me-1"></i> Pranik Movies</a></h3>
+        <p class="mt-3">Discover your perfect movie with Pranik Movies: The ultimate recommendation system. <br>Action-packed thriller with unexpected twists.</p>
+        <h6 class="fw-normal"><i class="fa fa-map-marker fs-5 align-middle col_red me-1"></i>  Najafgarh, New Delhi 110043</h6>
+        <h6 class="fw-normal mt-3"><i class="fa fa-envelope fs-5 align-middle col_red me-1"></i> yadavnikhilrao@gmail.com</h6>
+        <h6 class="fw-normal mt-3 mb-0"><i class="fa fa-phone fs-5 align-middle col_red me-1"></i>  +090**800200</h6>
+    <div class="developer_box">
+        <a href="https://yadavnikhilrao.github.io/portfolio"> <h4 id="developer">Developer  <span class="col_red">Nikhil Yadav</span></h4></a>
+  <ul class="social-network social-circle mb-0 mt-4">
+      <li><a href="https://instagram.com/yadavnikhilrao" class="icoRss" title="Rss"><i class="fa fa-instagram"></i></a></li>
+      <li><a href="https://www.facebook.com/yadavnikhilrao" class="icoFacebook" title="Facebook"><i class="fa fa-facebook"></i></a></li>
+      <li><a href="https://twitter.com/yadavnikhilrao" class="icoTwitter" title="Twitter"><i class="fa fa-twitter"></i></a></li>
+      <li><a href="https://www.youtube.com/@yadavnikhilrao" class="icoGoogle" title="Google +"><i class="fa fa-youtube"></i></a></li>
+      <li><a href="https://linkedin.com/in/yadavnikhilrao" class="icoLinkedin" title="Linkedin"><i class="fa fa-linkedin"></i></a></li>
+    </ul>
+    </div>
+  </div>
+</div>
+</div>
+</section>
+
+
+<section id="footer_b" class="pt-3 pb-3 bg_grey">
+<div class="container">
+   <div class="row footer_1">
+     <div class="col-md-8">
+    <div class="footer_1l">
+
+     <p class="mb-0"><span class="c_2023_pranik">© 2023 Pranik Movies. All Rights Reserved | </span> <span class="design_by">Design by <a class="col_red" href="https://yadavnikhilrao.github.io/portfolio">yadavnikhilrao</a></span> </p>
+    </div>
+   </div>
+   </div>
+</div>
+</section>
+
+<script>
+window.onscroll = function() {myFunction()};
+
+var navbar_sticky = document.getElementById("navbar_sticky");
+var sticky = navbar_sticky.offsetTop;
+var navbar_height = document.querySelector('.navbar').offsetHeight;
+
+function myFunction() {
+  if (window.pageYOffset >= sticky + navbar_height) {
+    navbar_sticky.classList.add("sticky")
+  document.body.style.paddingTop = navbar_height + 'px';
+  } else {
+    navbar_sticky.classList.remove("sticky");
+  document.body.style.paddingTop = '0'
+  }
+}
+</script>
+</body></html>

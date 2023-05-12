@@ -1,0 +1,428 @@
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+  <title>Pranik Movies</title>
+  <link href="../static/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../static/css/font-awesome.min.css" rel="stylesheet">
+  <link href="../static/css/global.css" rel="stylesheet">
+  <link href="../static/css/index.css" rel="stylesheet">
+  <link href="../static/css/rec.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani&amp;display=swap" rel="stylesheet">
+  <script src="../static/js/bootstrap.bundle.min.js"></script>
+
+  <!-- ------------------ Search Bar ------------------------- -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  
+<!-- ---------------- 1st Search bar -------------------- -->
+<script>
+    $(document).ready(function() {
+        $("#search-box-1").keyup(function() {
+            var query = $(this).val();
+            if (query.length > 1) {
+                $.get("/suggestions/" + query, function(data) {
+                    var suggestions = data.suggestions;
+                    var html = "";
+                    if (suggestions.length > 0) {
+                        for (var i = 0; i < suggestions.length; i++) {
+                            var suggestion = suggestions[i];
+                            html += '<li><a href="/search?query=' + suggestion.title + '&id=' + suggestion.id + '">' + suggestion.title + '</a></li>';
+                        }
+                    } else {
+                        html += '<li style="color: white;" onmouseover="this.style.color=\'red\';" onmouseout="this.style.color=\'white\';">Sorry! Not available</li>';
+                    }
+                    $("#suggestions-1").html(html);
+                    $("#suggestions-1").show();
+                });
+            } else {
+                $("#suggestions-1").hide();
+            }
+        });
+
+        // Add event listener to hide the suggestion box when clicking outside of it
+        $(document).on("click", function(event) {
+            if (!$(event.target).closest("#suggestions-1").length && !$(event.target).is("#search-box-1")) {
+                $("#suggestions-1").hide();
+            }
+        });
+
+        // Add event listener to submit the form when clicking the search button
+        $("#search-button").on("click", function(event) {
+            var searchValue = $("#search-box-1").val().trim();
+            if (searchValue !== "") {
+                // submit the search form with the search query as a parameter
+                var searchForm = $("#search-form");
+                searchForm.attr("action", "/search");
+                searchForm.attr("method", "GET");
+                var queryInput = $("<input>")
+                    .attr("type", "hidden")
+                    .attr("name", "query")
+                    .val(searchValue);
+                searchForm.append(queryInput);
+                searchForm.submit();
+            }
+        });
+    });
+</script>
+
+<!-- ---------------- 2nd Search bar -------------------- -->
+<script>
+    $(document).ready(function() {
+        $("#search-box-2").keyup(function() {
+            var query = $(this).val();
+            if (query.length > 1) {
+                $.get("/suggestions/" + query, function(data) {
+                    var suggestions = data.suggestions;
+                    var html = "";
+                    if (suggestions.length > 0) {
+                        for (var i = 0; i < suggestions.length; i++) {
+                            var suggestion = suggestions[i];
+                            html += '<li><a href="/search?query=' + suggestion.title + '&id=' + suggestion.id + '">' + suggestion.title + '</a></li>';
+                        }
+                    } else {
+                        html += '<li style="color: white;" onmouseover="this.style.color=\'red\';" onmouseout="this.style.color=\'white\';">Not available</li>';
+                    }
+                    $("#suggestions-2").html(html);
+                    $("#suggestions-2").show();
+                });
+            } else {
+                $("#suggestions-2").hide();
+            }
+        });
+
+        // Add event listener to hide the suggestion box when clicking outside of it
+        $(document).on("click", function(event) {
+            if (!$(event.target).closest("#suggestions-2").length && !$(event.target).is("#search-box-2")) {
+                $("#suggestions-2").hide();
+            }
+        });
+    });
+</script>
+
+</head>
+
+<body style="padding-top: 79px;">
+
+<!-- ------------------- Headers 1 --------------------- -->
+<section id="top">
+  <form method="POST" action="/search-movie">
+<div class="container">
+ <div class="row top_1">
+  <div class="col-md-3">
+   <div class="top_1l pt-1">
+    <h3 class="mb-0"><a class="text-white" href="/"><i class="fa fa-video-camera col_red me-1"></i> Pranik Movies</a></h3>
+    
+   </div>
+  </div>
+  <div class="col-md-5">
+   <div class="top_1m">
+
+    <div class="input-group">
+    <span class="input-group-text input-group-prepend bg-black rounded-0" style="border: none;">
+        <img src="../static/img/search.png" alt="Search Icon" style="height: 22px; width: 22px; background-color: transparent;">
+    </span>
+    <input type="text" class="form-control bg-black movie" id="search-box-1" name="movie" required="required" placeholder="Search Movie..." autocomplete="off">
+    <ul class="dropdown-menu bg-black" id="suggestions-1" style="display: none;"></ul>
+    <span class="input-group-btn">
+        <button class="btn btn text-white bg_red rounded-0 border-0" type="submit">
+            Search
+        </button>
+    </span>
+</div>
+
+   </div>
+  </div>
+  <div class="col-md-4">
+   <div class="top_1r text-end">
+     <ul class="social-network social-circle mb-0">
+      <li><a href="https://instagram.com/yadavnikhilrao" class="icoRss" title="Rss"><i class="fa fa-instagram"></i></a></li>
+      <li><a href="https://www.facebook.com/yadavnikhilrao" class="icoFacebook" title="Facebook"><i class="fa fa-facebook"></i></a></li>
+      <li><a href="https://twitter.com/yadavnikhilrao" class="icoTwitter" title="Twitter"><i class="fa fa-twitter"></i></a></li>
+      <li><a href="https://www.youtube.com/@yadavnikhilrao" class="icoGoogle" title="Google +"><i class="fa fa-youtube"></i></a></li>
+      <li><a href="https://linkedin.com/in/yadavnikhilrao" class="icoLinkedin" title="Linkedin"><i class="fa fa-linkedin"></i></a></li>
+    </ul>
+   </div>
+  </div>
+ </div>
+</div>
+</form>
+</section>
+
+<!-- ------------------ navBar ------------------------- -->
+<section id="header">
+  <nav class="navbar navbar-expand-md navbar-light sticky" id="navbar_sticky">
+    <div class="container">
+      <a class="navbar-brand text-white fw-bold" href="/"><i class="fa fa-video-camera col_red me-1"></i> Pranik Movies</a>
+      <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="navbar-collapse collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav ms-auto mb-2 mb-md-0">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="/">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/about">About</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="/contact">Contact Us</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</section>
+
+<script>
+  // Hide navbar when clicked outside of it
+  $(document).click(function(event) {
+    var clickover = $(event.target);
+    var navbar = $(".navbar-collapse");
+    var opened = navbar.hasClass("show");
+    if (opened === true && !clickover.hasClass("navbar-toggler")) {
+      navbar.collapse("hide");
+    }
+  });
+</script>
+
+
+<!-- ---------------- Your personalized movie advisor ------------------- -->
+<section id="about_pg">
+  <form id="search-form" method="POST" action="/search-movies">
+    <div class="about_pgm">
+      <div class="row trend_1 search_m container " style="padding-bottom: 0px;">
+        <h2>
+          <span class="col_red">The Pranik Movies:</span><br><span style="font-weight: ; font-size: 23px;">Your personalized movie advisor</span>
+        </h2>
+        <div class="col-md-12 gape_sr">
+          <div class="trend_1l">
+            <div class="input-group" style="border: 2px solid #616161;backdrop-filter: blur(15px); border-radius: 5px; padding: 5px;">
+              <div class="input-group-prepend ">
+                <span class="input-group-text bg-transparent" style="border: none;">
+                  <img src="../static/img/search.png" alt="Search Icon" style="height: 22px; width: 22px; background-color: transparent;">
+                </span>
+              </div>
+              <input type="text" class="form-control bg-transparent text-white movie" id="search-box-2" name="movie" required="required" placeholder="Search Movie..." autocomplete="off" style="border: none;">
+              <ul class="dropdown-menu bg-black" id="suggestions-2" style="display: none;"></ul>
+              <span class="input-group-btn">
+                <button class="btn btn text-white bg_red rounded-0 border-0" type="submit">Search</button>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row container about_pg1">
+        <span id="error" style="text-align: center; color: red; font-weight: inherit;">{{not_found}}</span>
+
+        <div class="col-md-12">
+          <h2><span class="col_red heading_main desktop_heading">The Pranik Movies:</span><br><span class="heading_main">Your personalized movie advisor</span></h2>
+          <p class="mt-3 w-50 bio">Pranik Movies is the perfect solution for those who are tired of endlessly scrolling through streaming services trying to find something to watch.</p>
+          <p class="w-50 bio">Our personalized movie advisor uses advanced algorithms to recommend movies and TV shows tailored specifically to your tastes. </p>
+          <p class="w-50 bio">With our intuitive interface and user-friendly features, you can easily browse through our vast collection of titles and discover your new favorite movie or show. </p>
+          <p class="w-50 bio phone_bio ">Whether you're looking for something new or just need some inspiration, Pranik Movies has got you covered. Try now and start exploring!</p><br id="nd"><br id="nd">
+          <!-- <p class="w-50 bio phone_bio">Sign up now to access exclusive content and personalized recommendations!</p> -->
+</div>
+</div>
+</div>
+
+  </form>
+</section>
+
+<!-- -------------------- Top Categories ------------------------ -->
+<section id="team" class="pt-4 pb-5 container">
+ <div class="container-xl">
+  <div class="row trend_1">
+  <div class="col-md-12">
+   <div class="trend_1l">
+    <h4 class="mb-0"><i class="fa fa-youtube-play align-middle col_red me-1"></i> Your <span class="col_red">Top Categories</span></h4>
+   </div>
+  </div>
+ </div>
+  <div class="row team_1 mt-4">
+    <div id="carouselExampleCaptions1" class="carousel slide" data-bs-ride="carousel">
+  <div class="carousel-indicators">
+    <button type="button" data-bs-target="#carouselExampleCaptions1" data-bs-slide-to="0" class="active" aria-label="Slide 1" aria-current="true"></button>
+    <button type="button" data-bs-target="#carouselExampleCaptions1" data-bs-slide-to="1" aria-label="Slide 2" class=""></button>
+  </div>
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <div class="team_1i row">
+
+     <div class="col-md-4">
+      <div class="team_1i1 clearfix position-relative">
+     <div class="team_1i1i clearfix">
+       <div class="grid clearfix">
+          <figure class="effect-jazz mb-0">
+          <a href="/horror-movies"><img src="../static/img/horror.jpg" class="w-100" alt="abc">
+          </figure>
+        </div>
+     </div>
+     <div class="team_1i1i1 clearfix position-absolute w-100 bottom-0">
+      <h4 class="col_red">Horror</h4>
+      
+      <p>Experience spine-chilling horror like never before with our collection of bone-chilling movies that will make your heart race and your spine tingle. Get ready to be on the edge of your seat as our horror movies take you on a terrifying journey filled with jump scares and unexpected twists.</p>
+      </a>
+     </div>
+    </div>
+     </div>
+     <div class="col-md-4">
+      <div class="team_1i1 clearfix position-relative">
+     <div class="team_1i1i clearfix">
+       <div class="grid clearfix">
+          <figure class="effect-jazz mb-0">
+          <a href="/comedy-movies"><img src="../static/img/comedy.jpg" class="w-100" alt="abc">
+          </figure>
+        </div>
+     </div>
+     <div class="team_1i1i1 clearfix position-absolute w-100 bottom-0">
+      <h4 class="col_red">Comedy</h4>
+      <p>Laugh out loud with our collection of side-splitting comedy movies that are sure to tickle your funny bone and brighten up your day. From classic comedies to modern hits, we've got you covered.</p>
+      </a>
+     </div>
+    </div>
+     </div>
+     <div class="col-md-4">
+      <div class="team_1i1 clearfix position-relative">
+     <div class="team_1i1i clearfix">
+       <div class="grid clearfix">
+          <figure class="effect-jazz mb-0">
+          <a href="/romance-movies"><img src="../static/img/romance.jpg" class="w-100" alt="abc">
+          </figure>
+        </div>
+     </div>
+     <div class="team_1i1i1 clearfix position-absolute w-100 bottom-0">
+      <h4 class="col_red">Romance</h4>
+      <p>Indulge in a heartwarming escape with our collection of romantic movies, perfect for a cozy night in with your loved one. From classic romances to modern-day love stories, we have something for everyone to enjoy.</p>
+      </a>
+      
+     </div>
+    </div>
+     </div>
+    </div>
+    
+    </div>
+    <div class="carousel-item">
+      <div class="team_1i row">
+     <div class="col-md-4">
+      <div class="team_1i1 clearfix position-relative">
+     <div class="team_1i1i clearfix">
+       <div class="grid clearfix">
+          <figure class="effect-jazz mb-0">
+          <a href="/thriller-movies"><img src="../static/img/thriller.jpg" class="w-100" alt="abc">
+          </figure>
+        </div>
+     </div>
+     <div class="team_1i1i1 clearfix position-absolute w-100 bottom-0">
+      <h4 class="col_red">Thriller</h4>
+      <p>Experience heart-pounding suspense and unexpected plot twists with our collection of thriller movies, guaranteed to keep you on the edge of your seat. From psychological thrillers to action-packed adventures, we have something for every thrill-seeker.</p>
+      </a>
+     </div>
+    </div>
+     </div>
+     <div class="col-md-4">
+      <div class="team_1i1 clearfix position-relative">
+     <div class="team_1i1i clearfix">
+       <div class="grid clearfix">
+          <figure class="effect-jazz mb-0">
+          <a href="/action-movies"><img src="../static/img/action.jpg" class="w-100" alt="abc">
+          </figure>
+        </div>
+     </div>
+     <div class="team_1i1i1 clearfix position-absolute w-100 bottom-0">
+      <h4 class="col_red">Action</h4>
+      <p>Experience non-stop thrills and adrenaline-pumping action with our collection of blockbuster action movies. Get ready for an action-packed adventure that will leave you on the edge of your seat.</p>
+    </a>
+     </div>
+    </div>
+     </div>
+     <div class="col-md-4">
+      <div class="team_1i1 clearfix position-relative">
+     <div class="team_1i1i clearfix">
+       <div class="grid clearfix">
+          <figure class="effect-jazz mb-0">
+          <a href="/drama-movies"><img src="../static/img/drama.jpg" class="w-100" alt="abc">
+          </figure>
+        </div>
+     </div>
+     <div class="team_1i1i1 clearfix position-absolute w-100 bottom-0">
+      <h4 class="col_red">Drama</h4>
+      <p>Experience the power of storytelling with our collection of emotional dramas that will take you on a rollercoaster of emotions. From heart-wrenching tragedies to inspiring tales of hope, we've got it all.</p>
+     </a>
+     </div>
+    </div>
+     </div>
+    </div>
+    </div>
+    
+  </div>
+
+</div>
+  </div>
+ </div>
+</section>
+
+
+
+
+<!-- ---------------------- Footer -------------------------- -->
+<section id="footer">
+  <div class="footer_m clearfix">
+    <div class="container">
+      <div class="">
+        <h3><a class="text-white" href="/"><i class="fa fa-video-camera col_red me-1"></i> Pranik Movies</a></h3>
+        <p class="mt-3">Discover your perfect movie with Pranik Movies: The ultimate recommendation system. <br>Action-packed thriller with unexpected twists.</p>
+        <h6 class="fw-normal"><i class="fa fa-map-marker fs-5 align-middle col_red me-1"></i>  Najafgarh, New Delhi 110043</h6>
+        <h6 class="fw-normal mt-3"><i class="fa fa-envelope fs-5 align-middle col_red me-1"></i> yadavnikhilrao@gmail.com</h6>
+        <h6 class="fw-normal mt-3 mb-0"><i class="fa fa-phone fs-5 align-middle col_red me-1"></i>  +090**800200</h6>
+    <div class="developer_box">
+        <a href="https://yadavnikhilrao.github.io/portfolio"> <h4 id="developer">Developer  <span class="col_red">Nikhil Yadav</span></h4></a>
+  <ul class="social-network social-circle mb-0 mt-4">
+      <li><a href="https://instagram.com/yadavnikhilrao" class="icoRss" title="Rss"><i class="fa fa-instagram"></i></a></li>
+      <li><a href="https://www.facebook.com/yadavnikhilrao" class="icoFacebook" title="Facebook"><i class="fa fa-facebook"></i></a></li>
+      <li><a href="https://twitter.com/yadavnikhilrao" class="icoTwitter" title="Twitter"><i class="fa fa-twitter"></i></a></li>
+      <li><a href="https://www.youtube.com/@yadavnikhilrao" class="icoGoogle" title="Google +"><i class="fa fa-youtube"></i></a></li>
+      <li><a href="https://linkedin.com/in/yadavnikhilrao" class="icoLinkedin" title="Linkedin"><i class="fa fa-linkedin"></i></a></li>
+    </ul>
+    </div>
+  </div>
+</div>
+</div>
+</section>
+
+
+<section id="footer_b" class="pt-3 pb-3 bg_grey">
+<div class="container">
+   <div class="row footer_1">
+     <div class="col-md-8">
+    <div class="footer_1l">
+
+     <p class="mb-0"><span class="c_2023_pranik">© 2023 Pranik Movies. All Rights Reserved | </span> <span class="design_by">Design by <a class="col_red" href="https://yadavnikhilrao.github.io/portfolio">yadavnikhilrao</a></span> </p>
+    </div>
+   </div>
+   </div>
+</div>
+</section>
+
+<script>
+window.onscroll = function() {myFunction()};
+
+var navbar_sticky = document.getElementById("navbar_sticky");
+var sticky = navbar_sticky.offsetTop;
+var navbar_height = document.querySelector('.navbar').offsetHeight;
+
+function myFunction() {
+  if (window.pageYOffset >= sticky + navbar_height) {
+    navbar_sticky.classList.add("sticky")
+  document.body.style.paddingTop = navbar_height + 'px';
+  } else {
+    navbar_sticky.classList.remove("sticky");
+  document.body.style.paddingTop = '0'
+  }
+}
+</script>
+</body></html>
