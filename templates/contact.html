@@ -19,7 +19,7 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-  
+
   <!-- ---------------- 1st Search bar -------------------- -->
 <script>
     $(document).ready(function() {
@@ -123,7 +123,7 @@
   <div class="col-md-3">
    <div class="top_1l pt-1">
     <h3 class="mb-0"><a class="text-white" href="/"><i class="fa fa-video-camera col_red me-1"></i> Pranik Movies</a></h3>
-    
+
    </div>
   </div>
   <div class="col-md-5">
@@ -203,11 +203,12 @@
 <div class="row contact_2 mt-4 container">
    <div class="col-md-3">
     <div class="contact_2r">
+     <form method="post" action="/contact-form">
       <h5 class="mb-3">ADDRESS</h5>
-      <p><i class="fa fa-car col_red me-1"></i> White House, Ghaziabad</p>
-      <p><i class="fa fa-phone col_red me-1"></i> +90**800200</p>
+      <p><i class="fa fa-car col_red me-1"></i> KIET College, Ghaziabad</p>
+      <p><i class="fa fa-phone col_red me-1"></i> +9027800200</p>
        <p><i class="fa fa-globe col_red me-1"></i> <a href="#">yadavnikhilrao@gmail.com</a></p>
-        <p><i class="fa fa-envelope col_red me-1"></i> <a href="#">nikhil2224mca1154@kiet.edu</a></p>
+        <!--<p><i class="fa fa-envelope col_red me-1"></i> <a href="#">nikhil2224mca1154@kiet.edu</a></p>-->
         <h5 class="mb-3 mt-4">WORKING HOURS</h5>
         <p>Saturday : <span class="fw-bold text-white">11am to 3pm</span></p>
         <p>Sunday : <span class="fw-bold text-white">12am tp 4pm</span></p>
@@ -217,41 +218,43 @@
     <div class="contact_2l row">
      <div class="col-md-12">
       <h4 align="center">GET IN TOUCH</h4>
-     </div> 
+     </div>
     </div>
     <div class="contact_2l1 mt-3 row">
      <div class="col-md-6">
       <div class="contact_2l1i">
-        <input class="form-control" placeholder="Name*" type="text">
-      </div>
-     </div> 
-     <div class="col-md-6">
-      <div class="contact_2l1i">
-        <input class="form-control" placeholder="Email*" type="text">
+        <input class="form-control" placeholder="Name*" name='name' type="text" required>
       </div>
      </div>
-     
+     <div class="col-md-6">
+      <div class="contact_2l1i">
+        <input class="form-control" placeholder="Email*" name='email' type="text" required>
+      </div>
+     </div>
+
     </div>
     <div class="contact_2l1 mt-3 row">
      <div class="col-md-6">
-      
-     </div> 
+
+     </div>
      <div class="col-md-6">
       <div class="contact_2l1i">
-        
+
       </div>
      </div>
-     
+
     </div>
     <div class="contact_2l1 mt-3 row">
      <div class="col-md-12">
       <div class="contact_2l1i">
-        <textarea placeholder="Comment" class="form-control form_text"></textarea>
+        <textarea placeholder="Comment" class="form-control form_text" name='message' required></textarea>
         <div align="center">
-        <h6 class="mt-3 mb-0"><a class="button" href="#"> Submit</a></h6>
+        <button type="submit" class="btn btn-primary mt-3 mb-0" style="background-color:red; color:white; border:none;">Submit</button>
+        <!--<button class="mt-3 mb-0"><a class="button" type="submit"> Submit</button></h6>-->
         </div>
       </div>
-     </div> 
+     </div>
+     </form>
     </div>
    </div>
   </div>
