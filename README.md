@@ -24,7 +24,7 @@ Pranik Movies is a user-friendly web application designed to help you search and
 
 ### Home Page
 
-![Home Page](./static/img/home.png)
+![Home Page](./static/img/home.jpeg)
 
 ### Search Results
 
