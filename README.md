@@ -37,13 +37,13 @@ Contributions are welcome! If you find any issues or have suggestions for improv
 
 ## Project Links
 
-- **Repository:** [https://github.com/your-username/pranik-movies](https://github.com/your-username/pranik-movies)
-- **Live Demo:** [https://your-username.github.io/pranik-movies](https://your-username.github.io/pranik-movies)
+- **Repository:** [https://github.com/yadavnikhilrao/The-Ultimate-Movies-Recommendation-System-V-2-Pranik-Movies](https://github.com/yadavnikhilrao/The-Ultimate-Movies-Recommendation-System-V-2-Pranik-Movies)
+- **Live Demo:** [https://pranik.pythonanywhere.com/](https://pranik.pythonanywhere.com/)
 
 ## Contact
 
-- **Website:** [https://pranikmovies.com](https://pranikmovies.com)
-- **Email:** contact@pranikmovies.com
-- **Follow us on Twitter:** [https://twitter.com/pranikmovies](https://twitter.com/pranikmovies)
-- **Follow us on Instagram:** [https://instagram.com/pranikmovies](https://instagram.com/pranikmovies)
-- **Like us on Facebook:** [https://facebook.com/pranikmovies](https://facebook.com/pranikmovies)
+- **Website:** [https://pranik.pythonanywhere.com/](https://pranik.pythonanywhere.com/)
+- **Email:** pranikmovies@gmail.com
+- **Follow us on Twitter:** [https://twitter.com/yadavnikhilrao](https://twitter.com/yadavnikhilrao)
+- **Follow us on Instagram:** [https://instagram.com/yadavnikhilrao](https://instagram.com/yadavnikhilrao)
+- **Like us on Facebook:** [https://facebook.com/yadavnikhilrao](https://facebook.com/yadavnikhilrao)
