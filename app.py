@@ -1,17 +1,33 @@
-# Imports several libraries and modules
 from flask import Flask, request, render_template
 from jinja2 import Environment
 import pickle
-import bz2file as bz2 
+import bz2file as bz2
 import requests
 import pandas as pd
 from patsy import dmatrices
 import json
 import urllib.request
+import logging
+from flask_mail import Mail, Message
 
-# load pre-trained machine learning models for movie recommendations.
-movies = pickle.load(open('model/movies_list.pkl', 'rb'))
-similarity = pickle.load(bz2.BZ2File('model/similarity.pkl', 'rb'))
+
+app = Flask(__name__)
+
+# Configure Flask-Mail settings
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USERNAME'] = 'pms.write@gmail.com'
+app.config['MAIL_PASSWORD'] = 'iwhchxznwifqddkv'
+app.config['MAIL_DEFAULT_SENDER'] = 'pms.write@gmail.com'
+
+# Configure the OAuth instances
+mail = Mail(app)
+
+
+
+movies = pickle.load(open('/home/pranik/mysite/model/movies_list.pkl', 'rb'))
+similarity = pickle.load(bz2.BZ2File('/home/pranik/mysite/model/similarity.pkl', 'rb'))
 
 # Retrieve details of a movie based on the input movie ID
 def fetch_movie_details(movie_id):
@@ -30,7 +46,7 @@ def fetch_movie_details(movie_id):
         trailer_key = 'https://www.youtube.com/embed/' + data['videos']['results'][0]['key']
     if poster_path is not None:
         full_path = "https://image.tmdb.org/t/p/w500/" + poster_path
-        
+
         title = data['title']
         genres = [genre['name'] for genre in data['genres']]
         imdb_rating = round(data['vote_average'], 1)
@@ -71,7 +87,7 @@ def rcmd(movie):
             recommended_movies.append(movies.iloc[idx]['movie_title'])
         return recommended_movies
 
-# Names and profile image of top 8 cast members    
+# Names and profile image of top 8 cast members
 def fetch_cast(movie_id):
     api_key = "b9093ccf3b2dedc32dd29d4b0b0bd00c"
     url = f"https://api.themoviedb.org/3/movie/{movie_id}/credits?api_key={api_key}&language=en-US"
@@ -90,8 +106,6 @@ def fetch_cast(movie_id):
     else:
         return []
 
-    
-app = Flask(__name__)
 
 # Flask route for the homepage
 @app.route("/", methods=["GET"])
@@ -118,11 +132,11 @@ def search_movie():
             print("Movie title: ",movie_info["movie_title"])
             # Fetch movie details from the TMDB API
             title, full_path, trailer_key, genres, imdb_rating, release_year, runtime_str, director, cast, overview = fetch_movie_details(movie_info['movie_id'])
-            
+
             # Top 8 Actors
             cast_ac = fetch_cast(movie_info['movie_id'])
-            
-            # Recommended movies details    
+
+            # Recommended movies details
             recommended_movies = rcmd(movie_info["movie_title"])
             movie_details = []
             if recommended_movies:
@@ -130,15 +144,15 @@ def search_movie():
                     try:
                         movie_id_r = movies[movies['movie_title'] == movie]['movie_id'].values[0]
                         title_r, poster_r, trailer_r, genres_r, rating_r, year_r, runtime_r, director_r, cast_r, overview_r = fetch_movie_details(movie_id_r)
-                        
+
                         movie_details.append({'poster_r':poster_r,'title_r': title_r, 'genres_r': genres_r, 'rating_r': rating_r, 'year': year_r, 'runtime_r': runtime_r,'movie_id_r': movie_id_r})
                     except:
                         continue
-            
+
             # Render the movie.html template with movie details
-            return render_template('rec.html', title=title, full_path=full_path, trailer_key=trailer_key, genres=genres, imdb_rating=imdb_rating, 
+            return render_template('rec.html', title=title, full_path=full_path, trailer_key=trailer_key, genres=genres, imdb_rating=imdb_rating,
                                    release_year=release_year, runtime_str=runtime_str, director=director, cast=cast, overview=overview, actors=cast_ac, movie_details=movie_details)
-        
+
     # If movie not found, show error message as push notification
     error = 'Sorry! Movie not found in our database. Please check spelling and try again.'
     return render_template("index.html",not_found = error)
@@ -151,14 +165,14 @@ def search_movie_phone():
     for _, movie_info in movies.iterrows():
         if movie_info["movie_title"].lower() == movie_title:
             print("Movie title: ",movie_info["movie_title"])
-            
+
             # Fetch movie details from the TMDB API
             title, full_path, trailer_key, genres, imdb_rating, release_year, runtime_str, director, cast, overview = fetch_movie_details(movie_info['movie_id'])
-            
+
             # Top 8 Actors
             cast_ac = fetch_cast(movie_info['movie_id'])
-            
-            # Recommended movies details    
+
+            # Recommended movies details
             recommended_movies = rcmd(movie_info["movie_title"])
             movie_details = []
             if recommended_movies:
@@ -166,15 +180,15 @@ def search_movie_phone():
                     try:
                         movie_id_r = movies[movies['movie_title'] == movie]['movie_id'].values[0]
                         title_r, poster_r, trailer_r, genres_r, rating_r, year_r, runtime_r, director_r, cast_r, overview_r = fetch_movie_details(movie_id_r)
-                        
+
                         movie_details.append({'poster_r':poster_r,'title_r': title_r, 'genres_r': genres_r, 'rating_r': rating_r, 'year_r': year_r, 'runtime_r': runtime_r,'movie_id_r': movie_id_r})
                     except:
                         continue
-            
+
             # Render the movie.html template with movie details
-            return render_template('rec.html', title=title, full_path=full_path, trailer_key=trailer_key, genres=genres, imdb_rating=imdb_rating, 
+            return render_template('rec.html', title=title, full_path=full_path, trailer_key=trailer_key, genres=genres, imdb_rating=imdb_rating,
                                    release_year=release_year, runtime_str=runtime_str, director=director, cast=cast, overview=overview, actors=cast_ac, movie_details=movie_details)
-        
+
     # If movie not found, show error message as push notification
     error = 'Sorry! Movie not found in our database. Please check spelling and try again.'
     return render_template("index.html",not_found=error)
@@ -216,11 +230,11 @@ def search_movies():
         # Fetch movie details from the TMDB API
         title, full_path, trailer_key, genres, imdb_rating, release_year, runtime_str, director, cast, overview = fetch_movie_details(int(movie_id))
         print(title,full_path)
-        
+
         # Top 8 Actors
         cast_ac = fetch_cast(int(movie_id))
-            
-        # Recommended movies details    
+
+        # Recommended movies details
         recommended_movies = rcmd(query)
         movie_details = []
         if recommended_movies:
@@ -228,14 +242,14 @@ def search_movies():
                 try:
                     movie_id_r = movies[movies['movie_title'] == movie]['movie_id'].values[0]
                     title_r, poster_r, trailer_r, genres_r, rating_r, year_r, runtime_r, director_r, cast_r, overview_r = fetch_movie_details(movie_id_r)
-                    
+
                     movie_details.append({'poster_r':poster_r,'title_r': title_r, 'genres_r': genres_r, 'rating_r': rating_r, 'year_r': year_r, 'runtime_r': runtime_r, 'movie_id_r': movie_id_r})
                 except:
                     continue
-                
-                
+
+
          # Render the movie.html template with movie details
-        return render_template('rec.html', title=title, full_path=full_path, trailer_key=trailer_key, genres=genres, imdb_rating=imdb_rating, 
+        return render_template('rec.html', title=title, full_path=full_path, trailer_key=trailer_key, genres=genres, imdb_rating=imdb_rating,
                              release_year=release_year, runtime_str=runtime_str, director=director, cast=cast, overview=overview, actors=cast_ac, movie_details=movie_details)
 
 # Top Movies Category
@@ -248,7 +262,7 @@ def thriller():
         title_r, poster_r, trailer_r, genres_r, rating_r, year_r, runtime_r, director_r, cast_r, overview_r = fetch_movie_details(movie_id)
         movie_details.append({'poster_r':poster_r,'title_r': title_r, 'genres_r': genres_r, 'rating_r': rating_r, 'year_r': year_r, 'runtime_r': runtime_r,'movie_id_r': movie_id})
     return render_template("thriller.html",movie_details=movie_details)
-  
+
 
 @app.route('/action-movies')
 def action():
@@ -288,7 +302,7 @@ def drama():
 
 @app.route('/horror-movies')
 def horror():
-    films = [310131,256907,335796,830788,259693,241258,83899,24116,19025,158519,15978,847732]
+    films = [310131,256907,335796,830788,259693,241258,83899,24116,146301,158519,242441,55779]
     movie_details = []
     for movie_id in films:
         # Fetch movie details from the TMDB API
@@ -306,6 +320,28 @@ def get_matching_movies(query):
     matching_movies = matching_movies.sort_values('movie_title')
     # Return the list of matching movies
     return matching_movies.to_dict(orient='records')
+
+
+
+@app.route('/contact-form', methods=['POST'])
+def contact_form():
+    if request.method == 'POST':
+        name = request.form.get('name')
+        email = request.form.get('email')
+        message = request.form.get('message')
+
+        # Create the email message
+        subject = 'New Contact Form Submission'
+        body = f"Name: {name}\nEmail: {email}\nMessage: {message}"
+        recipients = ['pranikmovies@gmail.com']
+
+        # Send the email
+        msg = Message(subject=subject, body=body, recipients=recipients)
+        mail.send(msg)
+
+        return 'Message sent successfully'
+    return render_template('contact.html')
+
 
 if __name__ == '__main__':
     app.run()
